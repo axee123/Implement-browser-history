@@ -1,0 +1,97 @@
+#include<stdio.h>
+#include<string.h>
+#define MAX_URL_LENGTH 100
+#define MAX_HISTORY_SIZE 10
+
+char history[MAX_HISTORY_SIZE][MAX_URL_LENGTH];
+int top = -1;
+void push(char url[]) {
+    if (top == MAX_HISTORY_SIZE - 1) {
+	printf("History is full\n");
+	return;
+    }
+    top++;
+    strcpy(history[top], url);
+}
+void displayCurrentPage() {
+    if (top == -1) {
+	printf("No page is currently open\n");
+    } else {
+	printf("Current page: %s\n", history[top]);
+    } }
+void goBack() {
+    if (top == -1) {
+	printf("No history to go back\n");
+    } else {
+	printf("Going back from %s\n", history[top]);
+	top--;
+    } }
+void goForward() {
+    if (top == MAX_HISTORY_SIZE - 1 || top == -1) {
+	printf("No history to go forward\n");
+    } else {
+	printf("Going forward to %s\n", history[top + 1]);
+	top++;
+    } }
+void insertURL() {
+    char url[MAX_URL_LENGTH];
+    printf("Enter the URL: ");
+    scanf("%s", url);
+    push(url);
+    printf("URL inserted successfully\n");
+}
+void deleteURL() {
+    int i,index;
+    printf("Enter the index of the URL to delete (0 to %d): ", top);
+    scanf("%d", &index);
+    if (index >= 0 && index <= top) {
+	for (i = index; i < top; i++) {
+	    strcpy(history[i], history[i + 1]);
+	}
+	top--;
+	printf("URL deleted successfully\n");
+    } else {
+	printf("Invalid index\n");
+    }}
+void displayFullHistory()
+{   int i;
+    if (top == -1) {
+	printf("History is empty\n");
+    } else {
+	printf("Full History:\n");
+	for (i = 0; i <= top; i++) {
+	    printf("%d. %s\n", i, history[i]);
+	}  } }
+int main() {
+ int choice;
+    do {
+	printf("\nBrowser History Menu:\n");
+	printf("1. Insert URL\n");
+	printf("2. Go Back\n");
+	printf("3. Go Forward\n");
+	printf("4. Display Current Page\n");
+	printf("5. Delete URL\n");
+	printf("6. Display Full History\n");
+	printf("7. Exit\n");
+	printf("Enter your choice: ");
+	scanf("%d", &choice);
+	switch (choice) {
+	    case 1:
+		insertURL(); break;
+	    case 2:
+		goBack(); break;
+	    case 3:
+		goForward(); break;
+	    case 4:
+		displayCurrentPage(); break;
+	    case 5:
+		deleteURL(); break;
+	    case 6:
+		displayFullHistory(); break;
+	    case 7:
+		printf("Exiting...\n"); break;
+	    default:
+		printf("Invalid choice\n");
+      }
+    } while (choice != 7);
+           return 0; }
